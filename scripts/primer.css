@@ -169,7 +169,9 @@ pre.sourceCode { background: var(--code-bg); }
   border: 1px solid var(--rule);
   border-left: 3px solid var(--thm-accent, var(--thm-blue));
   border-radius: 8px;
-  background: var(--thm-tint);
+  background: var(--thm-tint); /* fallback for browsers without color-mix */
+  /* Soft wash of the box's own accent color instead of a flat gray tint. */
+  background: color-mix(in srgb, var(--thm-accent, var(--thm-blue)) 7%, var(--bg));
 }
 .thm > :first-child { margin-top: 0; }
 .thm > :last-child  { margin-bottom: 0; }
