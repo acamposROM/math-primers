@@ -42,7 +42,7 @@
   }
 }
 
-html { font-size: 18px; }
+html { font-size: 18px; background: var(--bg); color: var(--fg); }
 body {
   color: var(--fg); background: var(--bg);
   font-family: Charter, Georgia, Cambria, "Times New Roman", serif;
