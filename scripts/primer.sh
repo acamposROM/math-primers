@@ -57,7 +57,7 @@ render_one() {
   fi
   pandoc "$src" \
     --standalone --embed-resources \
-    --mathjax \
+    --mathjax=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js \
     --toc --toc-depth=2 \
     --syntax-definition "$XML" \
     --css "$CSS" \
