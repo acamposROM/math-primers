@@ -1,0 +1,85 @@
+/* primer.css — readable styling for math primers, light + dark aware.
+   Embedded into each HTML output by primer.sh (--embed-resources). */
+:root {
+  --fg: #1a1a1a; --bg: #fbfbf9; --muted: #666;
+  --rule: #e2e2dc; --code-bg: #f0f0ec; --link: #1a5fb4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #d6d6d0; --bg: #16181d; --muted: #9a9a92;
+    --rule: #2c2f36; --code-bg: #21242b; --link: #78aeed;
+  }
+}
+html { font-size: 18px; }
+body {
+  color: var(--fg); background: var(--bg);
+  font-family: Charter, Georgia, Cambria, "Times New Roman", serif;
+  line-height: 1.65; max-width: 44rem; margin: 3rem auto; padding: 0 1.25rem;
+  -webkit-text-size-adjust: 100%;
+}
+h1, h2, h3, h4 { font-family: -apple-system, system-ui, sans-serif; line-height: 1.25; }
+h1 { font-size: 1.9rem; margin: 0 0 .5rem; }
+h2 { font-size: 1.4rem; margin: 2.2rem 0 .6rem; padding-bottom: .2rem; border-bottom: 1px solid var(--rule); }
+h3 { font-size: 1.15rem; margin: 1.6rem 0 .4rem; }
+a { color: var(--link); }
+p, li { overflow-wrap: break-word; }
+code { background: var(--code-bg); padding: .1em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code-bg); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+pre code { background: none; padding: 0; }
+blockquote { margin: 1rem 0; padding: .2rem 1rem; border-left: 3px solid var(--rule); color: var(--muted); }
+table { border-collapse: collapse; margin: 1rem 0; display: block; overflow-x: auto; }
+th, td { border: 1px solid var(--rule); padding: .4rem .7rem; text-align: left; }
+hr { border: none; border-top: 1px solid var(--rule); margin: 2rem 0; }
+#TOC { font-family: -apple-system, system-ui, sans-serif; font-size: .9rem; border: 1px solid var(--rule); border-radius: 8px; padding: .5rem 1.25rem; margin-bottom: 2rem; }
+#TOC ul { margin: .3rem 0; }
+/* Let long display-math scroll instead of overflowing the page. */
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; }
+
+/* Syntax highlighting (pandoc/skylighting token classes), theme-aware.
+   Light palette by default; dark palette under prefers-color-scheme. */
+:root {
+  --tok-kw: #cf222e; --tok-co: #6e7781; --tok-fu: #8250df;
+  --tok-dt: #953800; --tok-dv: #0550ae; --tok-st: #0a3069;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tok-kw: #ff7b72; --tok-co: #8b949e; --tok-fu: #d2a8ff;
+    --tok-dt: #ffa657; --tok-dv: #79c0ff; --tok-st: #a5d6ff;
+  }
+}
+pre.sourceCode, code.sourceCode { color: var(--fg); }
+pre.sourceCode span.kw { color: var(--tok-kw); font-weight: 600; }  /* keywords */
+pre.sourceCode span.co { color: var(--tok-co); font-style: italic; } /* comments */
+pre.sourceCode span.fu { color: var(--tok-fu); }                     /* tactics   */
+pre.sourceCode span.dt { color: var(--tok-dt); }                     /* types     */
+pre.sourceCode span.dv,
+pre.sourceCode span.bn,
+pre.sourceCode span.fl { color: var(--tok-dv); }                     /* numbers   */
+pre.sourceCode span.st { color: var(--tok-st); }                     /* strings   */
+pre.sourceCode span.op { color: var(--fg); }                         /* operators */
+/* Neutralize skylighting's default line-number/background quirks. */
+pre.sourceCode { background: var(--code-bg); }
+
+/* Top navigation (home link) on primer pages. */
+.topnav {
+  font-family: -apple-system, system-ui, sans-serif; font-size: .9rem;
+  margin-bottom: 1.75rem; padding-bottom: .6rem; border-bottom: 1px solid var(--rule);
+}
+.topnav a { color: var(--link); text-decoration: none; }
+.topnav a:hover { text-decoration: underline; }
+
+/* Status badges on the homepage index. */
+.badge {
+  display: inline-block; font-family: -apple-system, system-ui, sans-serif;
+  font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+  padding: .15em .55em; border-radius: 999px; vertical-align: middle;
+  margin-left: .45em; line-height: 1.5;
+}
+.badge-open       { background: rgba(245,158,11,.16); color: #b45309; }
+.badge-disproved  { background: rgba(16,185,129,.15); color: #047857; }
+.badge-proved     { background: rgba(37,99,235,.15);  color: #1d4ed8; }
+@media (prefers-color-scheme: dark) {
+  .badge-open      { background: rgba(245,158,11,.20); color: #fbbf24; }
+  .badge-disproved { background: rgba(16,185,129,.20); color: #34d399; }
+  .badge-proved    { background: rgba(96,165,250,.20); color: #93c5fd; }
+}

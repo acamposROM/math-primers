@@ -1,0 +1,5 @@
+# Generated site output (built locally or in CI; never committed).
+/build/
+
+# macOS
+.DS_Store

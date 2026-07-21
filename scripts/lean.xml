@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+<!-- Minimal Lean 4 syntax definition for pandoc/skylighting.
+     Covers keywords, common tactics, types, comments (-- and /- -/),
+     numbers, and strings. Good enough to pretty-print primer snippets. -->
+<language name="Lean" version="1" kateversion="5.0" section="Sources"
+          extensions="*.lean" mimetype="text/x-lean" author="" license="MIT">
+  <highlighting>
+    <list name="keywords">
+      <item>theorem</item><item>lemma</item><item>def</item><item>example</item>
+      <item>abbrev</item><item>instance</item><item>structure</item><item>class</item>
+      <item>inductive</item><item>namespace</item><item>section</item><item>end</item>
+      <item>open</item><item>import</item><item>variable</item><item>variables</item>
+      <item>universe</item><item>where</item><item>with</item><item>match</item>
+      <item>fun</item><item>let</item><item>have</item><item>show</item><item>from</item>
+      <item>by</item><item>do</item><item>if</item><item>then</item><item>else</item>
+      <item>calc</item><item>deriving</item><item>attribute</item><item>mutual</item>
+    </list>
+    <list name="tactics">
+      <item>intro</item><item>intros</item><item>apply</item><item>exact</item>
+      <item>refine</item><item>simp</item><item>simp_all</item><item>rw</item>
+      <item>rfl</item><item>norm_num</item><item>ring</item><item>ring_nf</item>
+      <item>decide</item><item>omega</item><item>constructor</item><item>cases</item>
+      <item>rcases</item><item>induction</item><item>use</item><item>obtain</item>
+      <item>linarith</item><item>nlinarith</item><item>positivity</item>
+      <item>contradiction</item><item>assumption</item><item>trivial</item>
+      <item>exfalso</item><item>left</item><item>right</item><item>ext</item>
+      <item>funext</item><item>subst</item><item>field_simp</item><item>sorry</item>
+    </list>
+    <contexts>
+      <context name="Normal" attribute="Normal Text" lineEndContext="#stay">
+        <Detect2Chars attribute="Comment" context="LineComment" char="-" char1="-"/>
+        <Detect2Chars attribute="Comment" context="BlockComment" char="/" char1="-"/>
+        <keyword attribute="Keyword" context="#stay" String="keywords"/>
+        <keyword attribute="Tactic" context="#stay" String="tactics"/>
+        <RegExpr attribute="Type" context="#stay" String="\b[A-Z][A-Za-z0-9_']*"/>
+        <RegExpr attribute="Number" context="#stay" String="\b[0-9]+\b"/>
+        <DetectChar attribute="String" context="StringCtx" char="&quot;"/>
+      </context>
+      <context name="LineComment" attribute="Comment" lineEndContext="#pop"/>
+      <context name="BlockComment" attribute="Comment" lineEndContext="#stay">
+        <Detect2Chars attribute="Comment" context="#pop" char="-" char1="/"/>
+      </context>
+      <context name="StringCtx" attribute="String" lineEndContext="#stay">
+        <DetectChar attribute="String" context="#pop" char="&quot;"/>
+      </context>
+    </contexts>
+    <itemDatas>
+      <itemData name="Normal Text" defStyleNum="dsNormal"/>
+      <itemData name="Keyword" defStyleNum="dsKeyword"/>
+      <itemData name="Tactic" defStyleNum="dsFunction"/>
+      <itemData name="Type" defStyleNum="dsDataType"/>
+      <itemData name="Comment" defStyleNum="dsComment"/>
+      <itemData name="Number" defStyleNum="dsDecVal"/>
+      <itemData name="String" defStyleNum="dsString"/>
+    </itemDatas>
+  </highlighting>
+  <general>
+    <comments>
+      <comment name="singleLine" start="--"/>
+      <comment name="multiLine" start="/-" end="-/"/>
+    </comments>
+  </general>
+</language>
