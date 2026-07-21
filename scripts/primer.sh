@@ -19,9 +19,22 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CSS="$HERE/scripts/primer.css"
 XML="$HERE/scripts/lean.xml"
+GLOSS="$HERE/glossary.md"
+LUA="$HERE/scripts/glossary.lua"
+THM="$HERE/scripts/theorems.lua"
+HEAD="$HERE/scripts/theme-head.html"
+TOGGLE="$HERE/scripts/theme-toggle.html"
 SRCDIR="$HERE/primers"
 OUTDIR="$HERE/build"
 mkdir -p "$OUTDIR"
+
+# Inline the stylesheet into each page's <head> as a <style> block (styling stays
+# self-contained), while MathJax loads from its CDN. We do NOT inline MathJax:
+# inlining breaks its font loading (the font path resolves relative to a base URL
+# that doesn't exist when inlined), which renders math with fallback fonts.
+STYLE_HEADER="$(mktemp)"
+{ printf '<style>\n'; cat "$CSS"; printf '\n</style>\n'; } > "$STYLE_HEADER"
+trap 'rm -f "$STYLE_HEADER"' EXIT
 
 # --- helpers ---------------------------------------------------------------
 
@@ -55,13 +68,17 @@ render_one() {
   if ! grep -qE '^title:' "$src"; then
     title_args=(--metadata "title=$base")
   fi
-  pandoc "$src" \
-    --standalone --embed-resources \
+  GLOSSARY_FILE="$GLOSS" pandoc "$src" \
+    --standalone \
     --mathjax=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js \
     --toc --toc-depth=2 \
     --syntax-definition "$XML" \
-    --css "$CSS" \
+    --lua-filter "$THM" \
+    --lua-filter "$LUA" \
+    --include-in-header "$STYLE_HEADER" \
+    --include-in-header "$HEAD" \
     --include-before-body "$HERE/scripts/nav.html" \
+    --include-after-body "$TOGGLE" \
     ${title_args[@]+"${title_args[@]}"} \
     -o "$out"
 }
@@ -73,6 +90,11 @@ needs_build() {
   [[ "$src" -nt "$out" ]] && return 0
   [[ "$CSS" -nt "$out" ]] && return 0
   [[ "$XML" -nt "$out" ]] && return 0
+  [[ "$GLOSS" -nt "$out" ]] && return 0
+  [[ "$LUA" -nt "$out" ]] && return 0
+  [[ "$THM" -nt "$out" ]] && return 0
+  [[ "$HEAD" -nt "$out" ]] && return 0
+  [[ "$TOGGLE" -nt "$out" ]] && return 0
   return 1
 }
 
@@ -120,7 +142,11 @@ build_index() {
       done < <(primer_sources)
     fi
   } > "$idx_md"
-  pandoc "$idx_md" --from markdown --standalone --embed-resources --css "$CSS" \
+  pandoc "$idx_md" --from markdown --standalone \
+    --mathjax=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js \
+    --include-in-header "$STYLE_HEADER" \
+    --include-in-header "$HEAD" \
+    --include-after-body "$TOGGLE" \
     -o "$OUTDIR/index.html"
   rm -f "$idx_md"
 }

@@ -14,7 +14,7 @@ This file (TEMPLATE.md) is skipped by `scripts/primer.sh --all`.
 State the problem/conjecture precisely. Inline math like $a_i^n = b^n$,
 display math like:
 $$
-\sum_{i=1}^{k} a_i^{\,n} = b^{\,n}.
+\sum_{i=1}^{k} a_i^{\,n} = b^{\,n}
 $$
 
 ## Context / why it matters

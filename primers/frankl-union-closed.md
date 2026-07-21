@@ -5,20 +5,24 @@ status: "open"
 
 ## The statement
 
-A finite family of finite sets $\mathcal{F}$ is **union-closed** if it is closed
-under taking unions:
+::: {.definition title="Union-closed family"}
+A finite [family]{.def} of finite sets $\mathcal{F}$ is *union-closed* if it is [closed]{.def} under
+taking unions:
 $$
-A, B \in \mathcal{F} \;\Longrightarrow\; A \cup B \in \mathcal{F}.
+A, B \in \mathcal{F} \;\Longrightarrow\; A \cup B \in \mathcal{F}
 $$
+:::
 
-Call an element $x$ **abundant** in $\mathcal{F}$ if it lies in at least half of the
+Call an element $x$ *abundant* in $\mathcal{F}$ if it lies in at least half of the
 member sets:
 $$
-\bigl|\{\, A \in \mathcal{F} : x \in A \,\}\bigr| \;\ge\; \frac{|\mathcal{F}|}{2}.
+\left|\{\, A \in \mathcal{F} : x \in A \,\}\right| \;\ge\; \frac{|\mathcal{F}|}{2}
 $$
 
-> **Frankl's conjecture (1979).** Every finite union-closed family $\mathcal{F}$
-> that contains at least one non-empty set has an abundant element.
+::: {.conjecture title="Frankl, 1979"}
+Every finite union-closed family $\mathcal{F}$ that contains at least one non-empty
+set has an [abundant]{.def} element.
+:::
 
 The exclusion of the degenerate family $\mathcal{F} = \{\emptyset\}$ is necessary:
 it has no elements at all, so nothing can be abundant. Everything else — including
@@ -32,11 +36,11 @@ problems in combinatorics.
 
 Let $U = \{1,2,3\}$ and
 $$
-\mathcal{F} = \bigl\{\, \emptyset,\ \{1\},\ \{1,2\},\ \{1,2,3\} \,\bigr\}.
+\mathcal{F} = \bigl\{\, \emptyset,\ \{1\},\ \{1,2\},\ \{1,2,3\} \,\bigr\}
 $$
 This is a chain, so it is trivially union-closed (the union of two comparable sets
 is the larger one). Here $|\mathcal{F}| = 4$, and element $1$ appears in
-$\{1\}, \{1,2\}, \{1,2,3\}$ — that is $3 \ge 4/2$ sets. So $1$ is abundant and the
+$\{1\}, \{1,2\}, \{1,2,3\}$ — that is $3 \ge 4/2$ sets. So $1$ is [abundant]{.def} and the
 conjecture holds for this family. Note $3$ appears in only one set, so *which*
 element is abundant matters; the conjecture only asks that **some** element be.
 
@@ -59,9 +63,9 @@ The conjecture wears several disguises; a foothold in one may help another.
   intersection-closed family (other than $\{U\}$) has an element in **at most** half
   its members.
 
-- **Lattice form.** A union-closed family ordered by inclusion is a finite lattice
+- **Lattice form.** A [union-closed]{.def} family ordered by inclusion is a finite lattice
   (with join $=$ union). Frankl's conjecture is equivalent to the statement that
-  **every finite lattice has a join-irreducible element $j$ lying below at most half
+  **every finite lattice has a [join-irreducible]{.def} element $j$ lying below at most half
   of the lattice's elements.** This reframes a set-system question as a purely
   order-theoretic one.
 

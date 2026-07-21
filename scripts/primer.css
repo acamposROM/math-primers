@@ -1,15 +1,47 @@
-/* primer.css — readable styling for math primers, light + dark aware.
-   Embedded into each HTML output by primer.sh (--embed-resources). */
+/* primer.css — readable styling for math primers.
+   Theming: light by default; dark is applied when the reader picks dark, OR the OS
+   is dark and they haven't explicitly picked light. The manual choice is stored on
+   <html data-theme="..."> by the toggle. Keep the two dark blocks below in sync. */
 :root {
+  /* base */
   --fg: #1a1a1a; --bg: #fbfbf9; --muted: #666;
   --rule: #e2e2dc; --code-bg: #f0f0ec; --link: #1a5fb4;
+  /* syntax tokens */
+  --tok-kw: #cf222e; --tok-co: #6e7781; --tok-fu: #8250df;
+  --tok-dt: #953800; --tok-dv: #0550ae; --tok-st: #0a3069;
+  /* theorem environments */
+  --thm-blue: #1d4ed8; --thm-teal: #0f766e; --thm-amber: #b45309;
+  --thm-purple: #6d28d9; --thm-muted: #6e7781; --thm-tint: rgba(0,0,0,.025);
+  /* status badges */
+  --badge-open-bg: rgba(245,158,11,.16); --badge-open-fg: #b45309;
+  --badge-disproved-bg: rgba(16,185,129,.15); --badge-disproved-fg: #047857;
+  --badge-proved-bg: rgba(37,99,235,.15); --badge-proved-fg: #1d4ed8;
+}
+:root[data-theme="dark"] {
+  --fg: #d6d6d0; --bg: #16181d; --muted: #9a9a92;
+  --rule: #2c2f36; --code-bg: #21242b; --link: #78aeed;
+  --tok-kw: #ff7b72; --tok-co: #8b949e; --tok-fu: #d2a8ff;
+  --tok-dt: #ffa657; --tok-dv: #79c0ff; --tok-st: #a5d6ff;
+  --thm-blue: #93c5fd; --thm-teal: #5eead4; --thm-amber: #fbbf24;
+  --thm-purple: #c4b5fd; --thm-muted: #9a9a92; --thm-tint: rgba(255,255,255,.035);
+  --badge-open-bg: rgba(245,158,11,.20); --badge-open-fg: #fbbf24;
+  --badge-disproved-bg: rgba(16,185,129,.20); --badge-disproved-fg: #34d399;
+  --badge-proved-bg: rgba(96,165,250,.20); --badge-proved-fg: #93c5fd;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --fg: #d6d6d0; --bg: #16181d; --muted: #9a9a92;
     --rule: #2c2f36; --code-bg: #21242b; --link: #78aeed;
+    --tok-kw: #ff7b72; --tok-co: #8b949e; --tok-fu: #d2a8ff;
+    --tok-dt: #ffa657; --tok-dv: #79c0ff; --tok-st: #a5d6ff;
+    --thm-blue: #93c5fd; --thm-teal: #5eead4; --thm-amber: #fbbf24;
+    --thm-purple: #c4b5fd; --thm-muted: #9a9a92; --thm-tint: rgba(255,255,255,.035);
+    --badge-open-bg: rgba(245,158,11,.20); --badge-open-fg: #fbbf24;
+    --badge-disproved-bg: rgba(16,185,129,.20); --badge-disproved-fg: #34d399;
+    --badge-proved-bg: rgba(96,165,250,.20); --badge-proved-fg: #93c5fd;
   }
 }
+
 html { font-size: 18px; }
 body {
   color: var(--fg); background: var(--bg);
@@ -32,21 +64,24 @@ th, td { border: 1px solid var(--rule); padding: .4rem .7rem; text-align: left; 
 hr { border: none; border-top: 1px solid var(--rule); margin: 2rem 0; }
 #TOC { font-family: -apple-system, system-ui, sans-serif; font-size: .9rem; border: 1px solid var(--rule); border-radius: 8px; padding: .5rem 1.25rem; margin-bottom: 2rem; }
 #TOC ul { margin: .3rem 0; }
-/* Let long display-math scroll instead of overflowing the page. */
-mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; }
+/* Let wide display-math scroll horizontally; vertical padding keeps tall glyphs
+   (∈, fractions, big delimiters) from being clipped by the scroll container. */
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding: .4em 0; }
 
-/* Syntax highlighting (pandoc/skylighting token classes), theme-aware.
-   Light palette by default; dark palette under prefers-color-scheme. */
-:root {
-  --tok-kw: #cf222e; --tok-co: #6e7781; --tok-fu: #8250df;
-  --tok-dt: #953800; --tok-dv: #0550ae; --tok-st: #0a3069;
+/* Light/dark toggle button (fixed, top-right). Set by scripts/theme-toggle.html. */
+.theme-toggle {
+  position: fixed; top: .85rem; right: .85rem; z-index: 60;
+  width: 2.15rem; height: 2.15rem;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--rule); border-radius: 999px;
+  background: var(--bg); color: var(--fg);
+  font-size: 1.05rem; line-height: 1; cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,.15);
+  transition: border-color .12s ease, transform .12s ease;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --tok-kw: #ff7b72; --tok-co: #8b949e; --tok-fu: #d2a8ff;
-    --tok-dt: #ffa657; --tok-dv: #79c0ff; --tok-st: #a5d6ff;
-  }
-}
+.theme-toggle:hover { border-color: var(--link); transform: translateY(-1px); }
+
+/* Syntax highlighting (pandoc/skylighting token classes). */
 pre.sourceCode, code.sourceCode { color: var(--fg); }
 pre.sourceCode span.kw { color: var(--tok-kw); font-weight: 600; }  /* keywords */
 pre.sourceCode span.co { color: var(--tok-co); font-style: italic; } /* comments */
@@ -57,7 +92,6 @@ pre.sourceCode span.bn,
 pre.sourceCode span.fl { color: var(--tok-dv); }                     /* numbers   */
 pre.sourceCode span.st { color: var(--tok-st); }                     /* strings   */
 pre.sourceCode span.op { color: var(--fg); }                         /* operators */
-/* Neutralize skylighting's default line-number/background quirks. */
 pre.sourceCode { background: var(--code-bg); }
 
 /* Top navigation (home link) on primer pages. */
@@ -75,11 +109,79 @@ pre.sourceCode { background: var(--code-bg); }
   padding: .15em .55em; border-radius: 999px; vertical-align: middle;
   margin-left: .45em; line-height: 1.5;
 }
-.badge-open       { background: rgba(245,158,11,.16); color: #b45309; }
-.badge-disproved  { background: rgba(16,185,129,.15); color: #047857; }
-.badge-proved     { background: rgba(37,99,235,.15);  color: #1d4ed8; }
-@media (prefers-color-scheme: dark) {
-  .badge-open      { background: rgba(245,158,11,.20); color: #fbbf24; }
-  .badge-disproved { background: rgba(16,185,129,.20); color: #34d399; }
-  .badge-proved    { background: rgba(96,165,250,.20); color: #93c5fd; }
+.badge-open      { background: var(--badge-open-bg);      color: var(--badge-open-fg); }
+.badge-disproved { background: var(--badge-disproved-bg); color: var(--badge-disproved-fg); }
+.badge-proved    { background: var(--badge-proved-bg);    color: var(--badge-proved-fg); }
+
+/* Hover-glossary blurbs (see scripts/glossary.lua).
+   A `.gloss` wraps the term and an absolutely-positioned `.gloss-pop` popover.
+   The popover is hidden with `visibility` (NOT display:none) so MathJax can still
+   measure and typeset the math inside it. */
+.gloss {
+  position: relative;
+  border-bottom: 1px dotted var(--link);
+  cursor: help;
 }
+.gloss-pop {
+  position: absolute;
+  left: 0; top: calc(100% + .35rem);
+  z-index: 30;
+  display: block;
+  width: max-content; max-width: min(24rem, 80vw);
+  visibility: hidden; opacity: 0;
+  transform: translateY(-3px);
+  transition: opacity .12s ease, transform .12s ease;
+  pointer-events: none;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--thm-teal);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.28);
+  padding: .7rem .85rem;
+  font-family: Charter, Georgia, Cambria, serif;
+  font-size: .86rem;
+  font-style: normal; font-weight: normal;
+  line-height: 1.5; text-align: left; white-space: normal;
+}
+.gloss:hover > .gloss-pop,
+.gloss:focus > .gloss-pop,
+.gloss:focus-within > .gloss-pop {
+  visibility: visible; opacity: 1; transform: translateY(0);
+  pointer-events: auto;
+}
+/* Term headword: reads like a dictionary entry — serif, normal case, foreground. */
+.gloss-title {
+  display: block;
+  font-family: Charter, Georgia, Cambria, "Times New Roman", serif;
+  font-size: .95rem; font-weight: 700; font-style: normal;
+  color: var(--fg);
+  margin-bottom: .15rem;
+}
+.gloss-pop p:first-of-type { margin-top: 0; }
+.gloss-pop p:last-of-type  { margin-bottom: 0; }
+
+/* LaTeX-style theorem environments (see scripts/theorems.lua).
+   `.thm` is the box; a type class (.definition, .theorem, ...) sets the accent. */
+.thm {
+  margin: 1.5rem 0;
+  padding: .8rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--thm-accent, var(--thm-blue));
+  border-radius: 8px;
+  background: var(--thm-tint);
+}
+.thm > :first-child { margin-top: 0; }
+.thm > :last-child  { margin-bottom: 0; }
+.thm-label {
+  font-family: -apple-system, system-ui, sans-serif;
+  font-weight: 700;
+  color: var(--thm-accent, var(--thm-blue));
+}
+.thm-title { font-weight: 600; }
+.thm.theorem, .thm.lemma, .thm.proposition,
+.thm.corollary, .thm.claim   { --thm-accent: var(--thm-blue); }
+.thm.definition              { --thm-accent: var(--thm-teal); }
+.thm.example                 { --thm-accent: var(--thm-amber); }
+.thm.conjecture              { --thm-accent: var(--thm-purple); }
+.thm.remark                  { --thm-accent: var(--thm-muted); }

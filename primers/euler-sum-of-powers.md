@@ -11,7 +11,7 @@ powers can never itself be an $n$-th power. Formally:
 
 $$
 \sum_{i=1}^{k} a_i^{\,n} = b^{\,n},\quad a_i, b \in \mathbb{Z}^{+}
-\;\Longrightarrow\; k \ge n .
+\;\Longrightarrow\; k \ge n
 $$
 
 For $n = 3$ this is exactly Fermat's Last Theorem (you need at least
@@ -33,7 +33,7 @@ Parkin in 1966 via a direct computer search on a CDC 6600, is a sum of only
 *four* fifth powers equal to a fifth power ($k = 4 < 5 = n$):
 
 $$
-27^5 + 84^5 + 110^5 + 133^5 = 144^5 .
+27^5 + 84^5 + 110^5 + 133^5 = 144^5
 $$
 
 Check the magnitude: both sides equal $61{,}917{,}364{,}224$. This single
