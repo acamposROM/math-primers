@@ -27,6 +27,7 @@ MERMAID_INIT="$HERE/scripts/mermaid-init.html"
 HEAD="$HERE/scripts/theme-head.html"
 TOGGLE="$HERE/scripts/theme-toggle.html"
 MJCONF="$HERE/scripts/mathjax-config.html"
+HEADANCHOR="$HERE/scripts/header-anchors.html"
 SRCDIR="$HERE/primers"
 OUTDIR="$HERE/build"
 mkdir -p "$OUTDIR"
@@ -98,6 +99,7 @@ render_one() {
     --include-in-header "$MJCONF" \
     --include-before-body "$HERE/scripts/nav.html" \
     --include-after-body "$TOGGLE" \
+    --include-after-body "$HEADANCHOR" \
     ${mermaid_args[@]+"${mermaid_args[@]}"} \
     ${title_args[@]+"${title_args[@]}"} \
     -o "$out"
@@ -118,6 +120,7 @@ needs_build() {
   [[ "$MJCONF" -nt "$out" ]] && return 0
   [[ "$MERMAID_LUA" -nt "$out" ]] && return 0
   [[ "$MERMAID_INIT" -nt "$out" ]] && return 0
+  [[ "$HEADANCHOR" -nt "$out" ]] && return 0
   return 1
 }
 
@@ -171,6 +174,7 @@ build_index() {
     --include-in-header "$HEAD" \
     --include-in-header "$MJCONF" \
     --include-after-body "$TOGGLE" \
+    --include-after-body "$HEADANCHOR" \
     -o "$OUTDIR/index.html"
   rm -f "$idx_md"
 }

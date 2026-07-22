@@ -81,6 +81,15 @@ mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding: .
 }
 .theme-toggle:hover { border-color: var(--link); transform: translateY(-1px); }
 
+/* Linkable section headers: a "#" that appears on hover (see scripts/header-anchors.html). */
+.header-anchor {
+  margin-left: .4rem; color: var(--muted); text-decoration: none;
+  font-weight: 400; opacity: 0; transition: opacity .12s;
+}
+h1:hover > .header-anchor, h2:hover > .header-anchor,
+h3:hover > .header-anchor, h4:hover > .header-anchor { opacity: .45; }
+.header-anchor:hover { opacity: 1; text-decoration: underline; }
+
 /* Syntax highlighting (pandoc/skylighting token classes). */
 pre.sourceCode, code.sourceCode { color: var(--fg); }
 pre.sourceCode span.kw { color: var(--tok-kw); font-weight: 600; }  /* keywords */
@@ -179,11 +188,35 @@ pre.mermaid {
 }
 pre.mermaid svg { max-width: 100%; height: auto; }
 
+/* Union-closed family explorer widget (embedded in the Frankl primer). */
+.uc-demo {
+  border: 1px solid var(--rule); border-radius: 10px; padding: 1rem 1.1rem;
+  margin: 1.5rem 0; font-family: -apple-system, system-ui, sans-serif; font-size: .85rem;
+}
+.uc-controls { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: .9rem; }
+.uc-demo button, .uc-demo select {
+  font: inherit; color: var(--fg); background: var(--bg);
+  border: 1px solid var(--rule); border-radius: 6px; padding: .3rem .6rem; cursor: pointer;
+}
+.uc-demo button:hover { border-color: var(--link); }
+.uc-grid { overflow-x: auto; text-align: center; }
+.uc-table { display: inline-table; border-collapse: collapse; }
+.uc-table th, .uc-table td { border: 1px solid var(--rule); padding: .28rem .55rem; text-align: center; min-width: 1.9rem; }
+.uc-table td.uc-set { font-family: Charter, Georgia, serif; text-align: left; white-space: nowrap; }
+.uc-dot { display: inline-block; width: .62rem; height: .62rem; border-radius: 50%; background: var(--fg); }
+.uc-table tfoot td { font-variant-numeric: tabular-nums; color: var(--muted); }
+.uc-table tfoot td.uc-ab {
+  color: var(--thm-teal); font-weight: 700;
+  background: color-mix(in srgb, var(--thm-teal) 15%, var(--bg));
+}
+.uc-summary { margin: .9rem 0 0; text-align: center; }
+
 /* Citation superscripts linking to the References list. */
 sup a { text-decoration: none; font-weight: 600; }
 sup a:hover { text-decoration: underline; }
-/* Highlight a reference when jumped to (the anchor is an empty span inside the li). */
+/* Highlight a reference when jumped to (the anchor is an empty span inside the li).
+   Padding is offset by a negative margin so the item doesn't shift out of alignment. */
 ol li:has(:target) {
   background: color-mix(in srgb, var(--link) 12%, var(--bg));
-  border-radius: 4px; padding: .1rem .3rem; margin-left: -.3rem;
+  border-radius: 4px; padding: 1px 5px; margin: 0 -5px;
 }

@@ -95,6 +95,7 @@ theoretical lower bound — but the full statement is still open.
 - **Small cases (computational).** True for every union-closed family whose universe
   has at most $12$ elements, and for every family with at most roughly $50$ member
   sets. Exhaustive search has therefore ruled out any *small* counterexample.^[6](#ref-bosnjak)^
+  ([explore one below](#explorer))
 
 - **Structural special cases.** True whenever $\mathcal{F}$ contains a set of size
   $1$ or $2$ (Poonen and others)^[2](#ref-poonen)^, and in various lattice-theoretic
@@ -116,7 +117,74 @@ theoretical lower bound — but the full statement is still open.
   and subsequent work has nudged slightly past it.^[5](#ref-improvements)^ The conjectured constant is
   $c = \tfrac12$, and closing the gap from $\approx 0.38$ to $0.5$ remains **open**.
 
-## Connection to the harness — an honest appraisal
+## See it: a union-closed family explorer {#explorer}
+
+The exhaustive-search result above is easy to *feel*. Generate a small union-closed family
+below — the grid shows which sets (rows) contain which elements (columns). Some column is
+always filled in **at least half** the rows: that abundant element is exactly what Frankl
+predicts, and what the small-case checks confirm.
+
+```{=html}
+<div class="uc-demo">
+  <div class="uc-controls">
+    <button type="button" class="uc-regen">↻ New family</button>
+    <label>universe size:
+      <select class="uc-n"><option>3</option><option selected>4</option><option>5</option></select>
+    </label>
+  </div>
+  <div class="uc-grid"></div>
+  <p class="uc-summary"></p>
+</div>
+<script>
+(function () {
+  var host = document.currentScript.previousElementSibling;
+  var grid = host.querySelector(".uc-grid"),
+      summary = host.querySelector(".uc-summary"),
+      nSel = host.querySelector(".uc-n");
+  host.querySelector(".uc-regen").addEventListener("click", render);
+  nSel.addEventListener("change", render);
+  function randSubset(n){ var m=0,i; for(i=0;i<n;i++) if(Math.random()<0.5) m|=(1<<i); return m; }
+  function popcount(x){ var c=0; while(x){ c+=x&1; x>>=1; } return c; }
+  function label(m,n){ var e=[],i; for(i=0;i<n;i++) if(m&(1<<i)) e.push(i+1); return e.length?"{"+e.join(",")+"}":"∅"; }
+  function genFamily(n){
+    var gens=[], k=2+Math.floor(Math.random()*3), i, s;
+    for(i=0;i<k;i++){ s=randSubset(n); if(s) gens.push(s); }
+    if(!gens.length) gens.push((1<<n)-1);
+    var fam={}; gens.forEach(function(g){ fam[g]=1; });
+    var changed=true;
+    while(changed){
+      changed=false;
+      var keys=Object.keys(fam).map(Number), a, b, u;
+      for(a=0;a<keys.length;a++) for(b=a;b<keys.length;b++){ u=keys[a]|keys[b]; if(!fam[u]){ fam[u]=1; changed=true; } }
+    }
+    return Object.keys(fam).map(Number).sort(function(x,y){ return popcount(x)-popcount(y) || x-y; });
+  }
+  function render(){
+    var n=parseInt(nSel.value,10), sets=genFamily(n), F=sets.length, i;
+    var counts=[]; for(i=0;i<n;i++){ var c=0; sets.forEach(function(s){ if(s&(1<<i)) c++; }); counts.push(c); }
+    var h='<table class="uc-table"><thead><tr><th>set</th>';
+    for(i=0;i<n;i++) h+="<th>"+(i+1)+"</th>";
+    h+="</tr></thead><tbody>";
+    sets.forEach(function(s){
+      h+='<tr><td class="uc-set">'+label(s,n)+"</td>";
+      for(i=0;i<n;i++) h+="<td>"+((s&(1<<i))?'<span class="uc-dot"></span>':"")+"</td>";
+      h+="</tr>";
+    });
+    h+='</tbody><tfoot><tr><td>share</td>';
+    for(i=0;i<n;i++){ var ab=counts[i]/F>=0.5; h+='<td class="'+(ab?"uc-ab":"")+'">'+counts[i]+"/"+F+"</td>"; }
+    h+="</tr></tfoot></table>";
+    grid.innerHTML=h;
+    var abund=[]; for(i=0;i<n;i++) if(counts[i]/F>=0.5) abund.push(i+1);
+    summary.innerHTML="This family has <b>"+F+"</b> sets. Abundant elements (in ≥ half): <b>"
+      + (abund.length?"{"+abund.join(", ")+"}":"—") + "</b>"
+      + (abund.length?" — highlighted. At least one always clears 50%, as Frankl predicts.":".");
+  }
+  render();
+})();
+</script>
+```
+
+## How to run this on an AI harness
 
 This primer's harness is built to **disprove** conjectures by certifying explicit
 counterexamples. Frankl's conjecture is a poor fit for that mode, and it is worth
