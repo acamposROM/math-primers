@@ -171,3 +171,19 @@ pre.sourceCode { background: var(--code-bg); }
 .thm > :last-child  { margin-bottom: 0; }
 .thm-label { font-weight: 700; }         /* bold serif in the foreground color */
 .thm-title { font-weight: 600; }
+
+/* Mermaid diagrams (rendered client-side by scripts/mermaid-init.html). */
+pre.mermaid {
+  background: none; padding: 0; margin: 1.75rem 0;
+  text-align: center; overflow-x: auto; line-height: normal;
+}
+pre.mermaid svg { max-width: 100%; height: auto; }
+
+/* Citation superscripts linking to the References list. */
+sup a { text-decoration: none; font-weight: 600; }
+sup a:hover { text-decoration: underline; }
+/* Highlight a reference when jumped to (the anchor is an empty span inside the li). */
+ol li:has(:target) {
+  background: color-mix(in srgb, var(--link) 12%, var(--bg));
+  border-radius: 4px; padding: .1rem .3rem; margin-left: -.3rem;
+}

@@ -18,6 +18,17 @@ A *family* is a set whose members are themselves sets — e.g.
 $\mathcal{F} = \{\,\{1\}, \{1,2\}\,\}$ is a family of subsets of $\{1,2\}$. In
 combinatorics the word just signals that the collection of sets is the object under study.
 
+## Universe
+
+The *universe* (or ground set) $U$ of a family $\mathcal{F}$ is the set of all elements
+that appear in any of its members: $U = \bigcup_{A \in \mathcal{F}} A$. Complements are
+taken relative to it.
+
+## Complement
+
+The *complement* of a set $A$ within a universe $U$ is $U \setminus A$ — everything in
+$U$ that is not in $A$. For example, with $U = \{1,2,3\}$ the complement of $\{1\}$ is $\{2,3\}$.
+
 ## Closed
 
 A set is *closed* under an operation when applying that operation to its members
@@ -34,6 +45,13 @@ $A, B \in \mathcal{F}$, the union $A \cup B$ is also in $\mathcal{F}$.
 
 An element $x$ is *abundant* in a family $\mathcal{F}$ when it belongs to at least
 half of the member sets: $\left|\{\,A \in \mathcal{F} : x \in A\,\}\right| \ge |\mathcal{F}|/2$.
+
+## Lattice
+
+A *lattice* is a partially ordered set in which every two elements have a least upper
+bound (their *join*, $\vee$) and a greatest lower bound (their *meet*, $\wedge$). A
+union-closed family ordered by $\subseteq$ is a lattice whose join is union:
+$A \vee B = A \cup B$.
 
 ## Join-irreducible
 

@@ -22,6 +22,8 @@ XML="$HERE/scripts/lean.xml"
 GLOSS="$HERE/glossary.md"
 LUA="$HERE/scripts/glossary.lua"
 THM="$HERE/scripts/theorems.lua"
+MERMAID_LUA="$HERE/scripts/mermaid.lua"
+MERMAID_INIT="$HERE/scripts/mermaid-init.html"
 HEAD="$HERE/scripts/theme-head.html"
 TOGGLE="$HERE/scripts/theme-toggle.html"
 MJCONF="$HERE/scripts/mathjax-config.html"
@@ -78,18 +80,25 @@ render_one() {
   if ! grep -qE '^title:' "$src"; then
     title_args=(--metadata "title=$base")
   fi
+  # Load the mermaid renderer only on pages that actually contain a diagram.
+  local mermaid_args=()
+  if grep -q '```mermaid' "$src"; then
+    mermaid_args=(--include-after-body "$MERMAID_INIT")
+  fi
   GLOSSARY_FILE="$GLOSS" pandoc "$src" \
     --standalone \
     --mathjax=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js \
     --toc --toc-depth=2 \
     --syntax-definition "$XML" \
     --lua-filter "$THM" \
+    --lua-filter "$MERMAID_LUA" \
     --lua-filter "$LUA" \
     --include-in-header "$STYLE_HEADER" \
     --include-in-header "$HEAD" \
     --include-in-header "$MJCONF" \
     --include-before-body "$HERE/scripts/nav.html" \
     --include-after-body "$TOGGLE" \
+    ${mermaid_args[@]+"${mermaid_args[@]}"} \
     ${title_args[@]+"${title_args[@]}"} \
     -o "$out"
 }
@@ -107,6 +116,8 @@ needs_build() {
   [[ "$HEAD" -nt "$out" ]] && return 0
   [[ "$TOGGLE" -nt "$out" ]] && return 0
   [[ "$MJCONF" -nt "$out" ]] && return 0
+  [[ "$MERMAID_LUA" -nt "$out" ]] && return 0
+  [[ "$MERMAID_INIT" -nt "$out" ]] && return 0
   return 1
 }
 

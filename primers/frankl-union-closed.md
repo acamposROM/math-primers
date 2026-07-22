@@ -21,7 +21,7 @@ $$
 
 ::: {.conjecture title="Frankl, 1979"}
 Every finite union-closed family $\mathcal{F}$ that contains at least one non-empty
-set has an abundant element.
+set has an abundant element.^[1](#ref-frankl)^
 :::
 
 The exclusion of the degenerate family $\mathcal{F} = \{\emptyset\}$ is necessary:
@@ -66,16 +66,22 @@ character that has defeated many elementary attempts.
 
 The conjecture wears several disguises; a foothold in one may help another.
 
-- **Intersection-closed dual.** By complementing every set, a union-closed family
-  becomes intersection-closed. The conjecture becomes: every finite
-  intersection-closed family (other than $\{U\}$) has an element in **at most** half
-  its members.
+- **Intersection-closed dual.** Take [complements]{.def key=complement} relative to the
+  [universe]{.def} $U$, replacing each member $A$ by $U \setminus A$. De Morgan turns
+  unions into intersections:
+  $$(U \setminus A) \cap (U \setminus B) = U \setminus (A \cup B)$$
+  So a union-closed family becomes intersection-closed, and "at least half" flips to
+  "at most half." The chain $\{\emptyset, \{1\}, \{1,2\}, \{1,2,3\}\}$ (with
+  $U = \{1,2,3\}$), for instance, complements to $\{\{1,2,3\}, \{2,3\}, \{3\}, \emptyset\}$.
+  So the conjecture is equivalent to: every finite intersection-closed family other than
+  $\{U\}$ has an element in **at most** half its members. (Why complementation does this,
+  plus the abundance flip: see [Set Duality](set-duality.html).)
 
-- **Lattice form.** A [union-closed]{.def} family ordered by inclusion is a finite lattice
-  (with join $=$ union). Frankl's conjecture is equivalent to the statement that
+- **Lattice form.** A [union-closed]{.def} family ordered by inclusion is a finite
+  [lattice]{.def} (with join $=$ union). Frankl's conjecture is equivalent to the statement that
   **every finite lattice has a [join-irreducible]{.def} element $j$ lying below at most half
   of the lattice's elements.** This reframes a set-system question as a purely
-  order-theoretic one.
+  order-theoretic one. (See [Lattices](lattices.html).)
 
 - **Graph form.** There is a formulation for the family of independent sets, and a
   well-studied special case for lattices of subgroups / bipartite graphs, each of
@@ -88,25 +94,26 @@ theoretical lower bound — but the full statement is still open.
 
 - **Small cases (computational).** True for every union-closed family whose universe
   has at most $12$ elements, and for every family with at most roughly $50$ member
-  sets. Exhaustive search has therefore ruled out any *small* counterexample.
+  sets. Exhaustive search has therefore ruled out any *small* counterexample.^[6](#ref-bosnjak)^
 
 - **Structural special cases.** True whenever $\mathcal{F}$ contains a set of size
-  $1$ or $2$ (Poonen and others), and in various lattice-theoretic special cases.
-  Early bounds (e.g. Knill) guaranteed only a *sublinear* abundance of about
+  $1$ or $2$ (Poonen and others)^[2](#ref-poonen)^, and in various lattice-theoretic
+  special cases. Early bounds (e.g. Knill^[3](#ref-knill)^) guaranteed only a *sublinear*
+  abundance of about
   $\tfrac{|\mathcal{F}| - 1}{\log_2 |\mathcal{F}|}$.
 
 - **Gilmer's breakthrough (2022).** Using an **information-theoretic / entropy**
   argument, Justin Gilmer proved the first *linear* bound: in any union-closed
   family, some element lies in at least a constant fraction $c \approx 0.01$ of the
-  sets. This was the first proof that abundance is bounded below by a positive
-  constant proportion at all.
+  sets.^[4](#ref-gilmer)^ This was the first proof that abundance is bounded below by a
+  positive constant proportion at all.
 
 - **Rapid improvements.** Within weeks, several groups sharpened the entropy method
   to the bound
   $$
   c \;=\; \frac{3 - \sqrt{5}}{2} \;\approx\; 0.3819,
   $$
-  and subsequent work has nudged slightly past it. The conjectured constant is
+  and subsequent work has nudged slightly past it.^[5](#ref-improvements)^ The conjectured constant is
   $c = \tfrac12$, and closing the gap from $\approx 0.38$ to $0.5$ remains **open**.
 
 ## Connection to the harness — an honest appraisal
@@ -160,11 +167,18 @@ once encoded as a concrete `Finset (Finset (Fin n))`. The universally-quantified
 
 ## References
 
-- P. Frankl (1979), origin of the conjecture; see D. G. Kelly and others for early
-  discussion.
-- B. Poonen, *Union-closed families*, J. Combin. Theory Ser. A **59** (1992).
-- E. Knill, *Graph generated union-closed families of sets* (1994) — sublinear bound.
-- J. Gilmer, *A constant lower bound for the union-closed sets conjecture* (2022).
-- Sawin; Chase–Lovett; Alweiss–Huang–Sellke; Pebody (2022–23) — entropy-method
-  improvements to $\tfrac{3-\sqrt5}{2}$ and slightly beyond.
-- I. Bošnjak, P. Marković, and V. Vučković — computational verification of small cases.
+1. []{#ref-frankl}P. Frankl (1979) — origin of the conjecture; see D. G. Kelly and
+   others for early discussion. (Predates arXiv.)
+2. []{#ref-poonen}B. Poonen, *Union-closed families*, J. Combin. Theory Ser. A **59**
+   (1992).
+3. []{#ref-knill}E. Knill,
+   [*Graph generated union-closed families of sets*](https://arxiv.org/abs/math/9409215)
+   (1994) — sublinear bound.
+4. []{#ref-gilmer}J. Gilmer,
+   [*A constant lower bound for the union-closed sets conjecture*](https://arxiv.org/abs/2211.09055)
+   (2022).
+5. []{#ref-improvements}Entropy-method improvements to $\tfrac{3-\sqrt5}{2}$ (Nov 2022):
+   [Sawin](https://arxiv.org/abs/2211.11504); [Chase–Lovett](https://arxiv.org/abs/2211.11689);
+   [Alweiss–Huang–Sellke](https://arxiv.org/abs/2211.11731); [Pebody](https://arxiv.org/abs/2211.13139).
+6. []{#ref-bosnjak}I. Bošnjak, P. Marković, and V. Vučković — computational verification
+   of small cases.
