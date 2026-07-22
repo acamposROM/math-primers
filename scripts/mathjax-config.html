@@ -1,0 +1,72 @@
+<script>
+/* Make rendered math copyable as LaTeX.
+   1. After MathJax typesets, tag each container with its source LaTeX (data-tex).
+   2. On copy, emit the LaTeX for every equation the selection touches (inline as
+      $...$, display as $$...$$), interleaved with any selected prose.
+   MathJax's right-click menu ("Copy to Clipboard", "Show Math As") still works too. */
+window.MathJax = {
+  startup: {
+    ready: function () {
+      MathJax.startup.defaultReady();
+      MathJax.startup.promise.then(function () {
+        try {
+          for (var item of MathJax.startup.document.math) {
+            if (item && item.typesetRoot && item.math != null) {
+              item.typesetRoot.setAttribute("data-tex", item.math);
+            }
+          }
+        } catch (err) {
+          if (window.console) console.warn("math-copy: tagging failed", err);
+        }
+      });
+    }
+  }
+};
+
+function mjxWrap(el) {
+  var tex = (el.getAttribute("data-tex") || "").trim();
+  return el.getAttribute("display") === "true" ? "$$" + tex + "$$" : "$" + tex + "$";
+}
+
+document.addEventListener("copy", function (e) {
+  var sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return;
+  var range = sel.getRangeAt(0);
+
+  // Every tagged equation the selection touches (works even for partial/odd CHTML selections).
+  var hits = [];
+  document.querySelectorAll("mjx-container[data-tex]").forEach(function (c) {
+    if (range.intersectsNode(c)) hits.push(c);
+  });
+  // Also catch the equation holding the selection's endpoints, in case intersectsNode
+  // misses a selection that sits entirely inside one CHTML container.
+  [range.startContainer, range.endContainer, range.commonAncestorContainer].forEach(function (n) {
+    var el = n && (n.nodeType === 1 ? n : n.parentElement);
+    var c = el && el.closest("mjx-container[data-tex]");
+    if (c && hits.indexOf(c) === -1) hits.push(c);
+  });
+  if (!hits.length) return; // no math in selection → let the browser copy normally
+
+  // Expand a copy of the range so touched equations are fully inside the clone.
+  var work = range.cloneRange();
+  try {
+    var first = hits[0], last = hits[hits.length - 1];
+    if (first.contains(work.startContainer) || first === work.startContainer) work.setStartBefore(first);
+    if (last.contains(work.endContainer) || last === work.endContainer) work.setEndAfter(last);
+  } catch (err) {}
+
+  var frag = work.cloneContents();
+  frag.querySelectorAll("mjx-container[data-tex]").forEach(function (c) {
+    c.replaceWith(document.createTextNode(mjxWrap(c)));
+  });
+  frag.querySelectorAll("mjx-assistive-mml").forEach(function (n) { n.remove(); });
+
+  var box = document.createElement("div");
+  box.appendChild(frag);
+  var text = box.textContent.replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim();
+  if (!text) text = hits.map(mjxWrap).join("\n"); // fallback: just the equations
+
+  e.clipboardData.setData("text/plain", text);
+  e.preventDefault();
+});
+</script>

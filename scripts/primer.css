@@ -135,7 +135,6 @@ pre.sourceCode { background: var(--code-bg); }
   background: var(--bg);
   color: var(--fg);
   border: 1px solid var(--rule);
-  border-left: 3px solid var(--thm-teal);
   border-radius: 10px;
   box-shadow: 0 8px 28px rgba(0,0,0,.28);
   padding: .7rem .85rem;
@@ -164,26 +163,11 @@ pre.sourceCode { background: var(--code-bg); }
 /* LaTeX-style theorem environments (see scripts/theorems.lua).
    `.thm` is the box; a type class (.definition, .theorem, ...) sets the accent. */
 .thm {
-  margin: 1.5rem 0;
-  padding: .8rem 1.1rem;
-  border: 1px solid var(--rule);
-  border-left: 3px solid var(--thm-accent, var(--thm-blue));
-  border-radius: 8px;
-  background: var(--thm-tint); /* fallback for browsers without color-mix */
-  /* Soft wash of the box's own accent color instead of a flat gray tint. */
-  background: color-mix(in srgb, var(--thm-accent, var(--thm-blue)) 7%, var(--bg));
+  margin: 1.6rem 0;
+  padding: .1rem 0 .1rem 1.15rem;
+  border-left: 3px solid var(--muted);   /* neutral rule, no per-type color */
 }
 .thm > :first-child { margin-top: 0; }
 .thm > :last-child  { margin-bottom: 0; }
-.thm-label {
-  font-family: -apple-system, system-ui, sans-serif;
-  font-weight: 700;
-  color: var(--thm-accent, var(--thm-blue));
-}
+.thm-label { font-weight: 700; }         /* bold serif in the foreground color */
 .thm-title { font-weight: 600; }
-.thm.theorem, .thm.lemma, .thm.proposition,
-.thm.corollary, .thm.claim   { --thm-accent: var(--thm-blue); }
-.thm.definition              { --thm-accent: var(--thm-teal); }
-.thm.example                 { --thm-accent: var(--thm-amber); }
-.thm.conjecture              { --thm-accent: var(--thm-purple); }
-.thm.remark                  { --thm-accent: var(--thm-muted); }

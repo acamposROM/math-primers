@@ -21,7 +21,7 @@ $$
 
 ::: {.conjecture title="Frankl, 1979"}
 Every finite union-closed family $\mathcal{F}$ that contains at least one non-empty
-set has an [abundant]{.def} element.
+set has an abundant element.
 :::
 
 The exclusion of the degenerate family $\mathcal{F} = \{\emptyset\}$ is necessary:
@@ -40,7 +40,7 @@ $$
 $$
 This is a chain, so it is trivially union-closed (the union of two comparable sets
 is the larger one). Here $|\mathcal{F}| = 4$, and element $1$ appears in
-$\{1\}, \{1,2\}, \{1,2,3\}$ — that is $3 \ge 4/2$ sets. So $1$ is [abundant]{.def} and the
+$\{1\}, \{1,2\}, \{1,2,3\}$ — that is $3 \ge 4/2$ sets. So $1$ is abundant and the
 conjecture holds for this family. Note $3$ appears in only one set, so *which*
 element is abundant matters; the conjecture only asks that **some** element be.
 

@@ -17,8 +17,17 @@ export PATH="/opt/homebrew/bin:$PATH"
 PORT="${PORT:-8080}"
 MARKER="$(mktemp)"
 SERVER_PID=""
-cleanup() { rm -f "$MARKER"; [ -n "$SERVER_PID" ] && kill "$SERVER_PID" 2>/dev/null; }
-trap cleanup EXIT INT TERM
+cleanup() {
+  rm -f "$MARKER"
+  if [ -n "${SERVER_PID:-}" ]; then
+    pkill -P "$SERVER_PID" 2>/dev/null   # the node/live-server child that npx spawned
+    kill "$SERVER_PID" 2>/dev/null       # npx itself
+  fi
+}
+# Clean up on normal exit; on Ctrl-C/kill, clean up AND actually exit (a plain INT
+# trap would run cleanup but then resume the while-loop, so the script never stopped).
+trap cleanup EXIT
+trap 'trap - EXIT; cleanup; exit 130' INT TERM
 
 # Initial build.
 scripts/primer.sh --force || true

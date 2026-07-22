@@ -24,6 +24,7 @@ LUA="$HERE/scripts/glossary.lua"
 THM="$HERE/scripts/theorems.lua"
 HEAD="$HERE/scripts/theme-head.html"
 TOGGLE="$HERE/scripts/theme-toggle.html"
+MJCONF="$HERE/scripts/mathjax-config.html"
 SRCDIR="$HERE/primers"
 OUTDIR="$HERE/build"
 mkdir -p "$OUTDIR"
@@ -77,6 +78,7 @@ render_one() {
     --lua-filter "$LUA" \
     --include-in-header "$STYLE_HEADER" \
     --include-in-header "$HEAD" \
+    --include-in-header "$MJCONF" \
     --include-before-body "$HERE/scripts/nav.html" \
     --include-after-body "$TOGGLE" \
     ${title_args[@]+"${title_args[@]}"} \
@@ -95,6 +97,7 @@ needs_build() {
   [[ "$THM" -nt "$out" ]] && return 0
   [[ "$HEAD" -nt "$out" ]] && return 0
   [[ "$TOGGLE" -nt "$out" ]] && return 0
+  [[ "$MJCONF" -nt "$out" ]] && return 0
   return 1
 }
 
@@ -146,6 +149,7 @@ build_index() {
     --mathjax=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js \
     --include-in-header "$STYLE_HEADER" \
     --include-in-header "$HEAD" \
+    --include-in-header "$MJCONF" \
     --include-after-body "$TOGGLE" \
     -o "$OUTDIR/index.html"
   rm -f "$idx_md"
