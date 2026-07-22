@@ -13,6 +13,7 @@ set -uo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$HERE"
 export PATH="/opt/homebrew/bin:$PATH"
+export PRIMER_DEV=1   # local preview shows block/line numbers; CI builds never set this
 
 PORT="${PORT:-8080}"
 MARKER="$(mktemp)"

@@ -70,3 +70,53 @@ document.addEventListener("copy", function (e) {
   e.preventDefault();
 });
 </script>
+
+<style>
+/* Selection highlighting for rendered math.
+   CHTML output is not real text, so native selection paints only stray
+   fragments. Suppress those, and instead paint a clean highlight over each
+   whole equation the selection touches (class toggled by the script below). */
+mjx-container ::selection,
+mjx-container::selection {
+  background: transparent;
+}
+mjx-container.mjx-selected {
+  background: Highlight;
+  border-radius: 3px;
+}
+/* Display math: the container is a full-width block; highlight just the
+   centered equation box, not the whole line. */
+mjx-container[display="true"].mjx-selected {
+  background: none;
+}
+mjx-container[display="true"].mjx-selected > mjx-math {
+  background: Highlight;
+  border-radius: 3px;
+  padding: 0.1em 0.25em;
+}
+</style>
+
+<script>
+/* Paint each equation as selected while the user's selection sweeps over it,
+   so highlighting behaves like normal text. Pairs with the copy handler above. */
+(function () {
+  var scheduled = false;
+  function update() {
+    scheduled = false;
+    var sel = window.getSelection();
+    var ranges = [];
+    if (sel && !sel.isCollapsed) {
+      for (var i = 0; i < sel.rangeCount; i++) ranges.push(sel.getRangeAt(i));
+    }
+    document.querySelectorAll("mjx-container").forEach(function (c) {
+      var hit = ranges.some(function (r) {
+        try { return r.intersectsNode(c); } catch (e) { return false; }
+      });
+      c.classList.toggle("mjx-selected", hit);
+    });
+  }
+  document.addEventListener("selectionchange", function () {
+    if (!scheduled) { scheduled = true; requestAnimationFrame(update); }
+  });
+})();
+</script>

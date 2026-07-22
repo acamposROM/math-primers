@@ -1,0 +1,20 @@
+/* Dev-only block numbering — injected ONLY in local dev builds (PRIMER_DEV=1 or
+   --dev), never in the deployed site. Numbers each top-level content block in the
+   left margin so you can point to a section by number. */
+body { counter-reset: devln; }
+body > *:not(nav):not(button):not(script):not(style):not(header) {
+  counter-increment: devln;
+  position: relative;
+}
+body > *:not(nav):not(button):not(script):not(style):not(header)::before {
+  content: counter(devln);
+  position: absolute;
+  left: -2.9rem;
+  width: 2.2rem;
+  text-align: right;
+  font: .7rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--muted);
+  opacity: .55;
+  user-select: none;
+  pointer-events: none;
+}

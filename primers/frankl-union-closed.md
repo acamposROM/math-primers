@@ -38,8 +38,12 @@ Let $U = \{1,2,3\}$ and
 $$
 \mathcal{F} = \bigl\{\, \emptyset,\ \{1\},\ \{1,2\},\ \{1,2,3\} \,\bigr\}
 $$
-This is a chain, so it is trivially union-closed (the union of two comparable sets
-is the larger one). Here $|\mathcal{F}| = 4$, and element $1$ appears in
+This family is a *chain* — its sets are nested, $\emptyset \subseteq \{1\} \subseteq
+\{1,2\} \subseteq \{1,2,3\}$. That makes it union-closed for free: any two members are
+comparable (one contains the other), and the union of nested sets is just the larger
+one, since $A \subseteq B$ gives $A \cup B = B$. So a union never produces a *new* set —
+you always get back one of the two members you started with, which is already present.
+(By contrast $\{\{1\}, \{2\}\}$ is *not* union-closed: $\{1\} \cup \{2\} = \{1,2\}$ escapes it.) Here $|\mathcal{F}| = 4$, and element $1$ appears in
 $\{1\}, \{1,2\}, \{1,2,3\}$ — that is $3 \ge 4/2$ sets. So $1$ is abundant and the
 conjecture holds for this family. Note $3$ appears in only one set, so *which*
 element is abundant matters; the conjecture only asks that **some** element be.
@@ -48,10 +52,14 @@ element is abundant matters; the conjecture only asks that **some** element be.
 
 The intuition: unions only ever *add* elements, so "popular" elements should
 propagate upward through the family and end up in many sets. Averaging arguments
-make this feel inevitable. But the difficulty is that union-closure is a *global*
-constraint with very little *local* structure to grab onto — you cannot simply
-point to a distinguished element, and adversarial families can spread membership
-out in subtle ways. The conjecture has a slippery, "obviously true but no handle"
+make this feel inevitable. But union-closure and abundance live at different *levels*. Abundance is *local* — it
+asks whether one specific element sits in half the sets — while union-closure is a
+*global* property of the whole family, indifferent to any single element. So the
+hypothesis hands you no direct lever on the quantity you care about: you cannot just
+nominate an element and force it to be popular, because a family can be union-closed
+while spreading membership thinly and evenly, keeping every element below half.
+Turning that global structural fact into a local, pointwise guarantee is exactly the
+sticking point. The conjecture has a slippery, "obviously true but no handle"
 character that has defeated many elementary attempts.
 
 ## Equivalent formulations

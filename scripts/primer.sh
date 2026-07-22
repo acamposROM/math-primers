@@ -33,8 +33,17 @@ mkdir -p "$OUTDIR"
 # self-contained), while MathJax loads from its CDN. We do NOT inline MathJax:
 # inlining breaks its font loading (the font path resolves relative to a base URL
 # that doesn't exist when inlined), which renders math with fallback fonts.
+# Dev-only block numbering for local preview (PRIMER_DEV=1 or --dev). Never on in CI.
+DEV="${PRIMER_DEV:-0}"
+case " $* " in *" --dev "*) DEV=1 ;; esac
+
 STYLE_HEADER="$(mktemp)"
-{ printf '<style>\n'; cat "$CSS"; printf '\n</style>\n'; } > "$STYLE_HEADER"
+{
+  printf '<style>\n'
+  cat "$CSS"
+  [ "$DEV" = 1 ] && cat "$HERE/scripts/dev-linenums.css"
+  printf '\n</style>\n'
+} > "$STYLE_HEADER"
 trap 'rm -f "$STYLE_HEADER"' EXIT
 
 # --- helpers ---------------------------------------------------------------
@@ -164,6 +173,7 @@ for arg in "$@"; do
     --open)  OPEN=1 ;;
     --serve) SERVE=1 ;;
     --all)   : ;;                 # accepted for back-compat; default is already all
+    --dev)   : ;;                 # handled above (block numbering); no-op here
     -*)      echo "primer: unknown option: $arg" >&2; exit 2 ;;
     *)       ONE="$arg" ;;
   esac
