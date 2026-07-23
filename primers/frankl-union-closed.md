@@ -235,18 +235,9 @@ once encoded as a concrete `Finset (Finset (Fin n))`. The universally-quantified
 
 ## References
 
-1. []{#ref-frankl}P. Frankl (1979) — origin of the conjecture; see D. G. Kelly and
-   others for early discussion. (Predates arXiv.)
-2. []{#ref-poonen}B. Poonen, *Union-closed families*, J. Combin. Theory Ser. A **59**
-   (1992).
-3. []{#ref-knill}E. Knill,
-   [*Graph generated union-closed families of sets*](https://arxiv.org/abs/math/9409215)
-   (1994) — sublinear bound.
-4. []{#ref-gilmer}J. Gilmer,
-   [*A constant lower bound for the union-closed sets conjecture*](https://arxiv.org/abs/2211.09055)
-   (2022).
-5. []{#ref-improvements}Entropy-method improvements to $\tfrac{3-\sqrt5}{2}$ (Nov 2022):
-   [Sawin](https://arxiv.org/abs/2211.11504); [Chase–Lovett](https://arxiv.org/abs/2211.11689);
-   [Alweiss–Huang–Sellke](https://arxiv.org/abs/2211.11731); [Pebody](https://arxiv.org/abs/2211.13139).
-6. []{#ref-bosnjak}I. Bošnjak, P. Marković, and V. Vučković — computational verification
-   of small cases.
+1. []{#ref-frankl}P. Frankl (1979) — origin of the conjecture; see D. G. Kelly and others for early discussion. (Predates arXiv.)
+2. []{#ref-poonen}B. Poonen, *Union-closed families*, J. Combin. Theory Ser. A **59** (1992).
+3. []{#ref-knill}E. Knill, [*Graph generated union-closed families of sets*](https://arxiv.org/abs/math/9409215) (1994) — sublinear bound.
+4. []{#ref-gilmer}J. Gilmer, [*A constant lower bound for the union-closed sets conjecture*](https://arxiv.org/abs/2211.09055) (2022).
+5. []{#ref-improvements}Entropy-method improvements to $\tfrac{3-\sqrt5}{2}$ (Nov 2022): [Sawin](https://arxiv.org/abs/2211.11504); [Chase–Lovett](https://arxiv.org/abs/2211.11689); [Alweiss–Huang–Sellke](https://arxiv.org/abs/2211.11731); [Pebody](https://arxiv.org/abs/2211.13139).
+6. []{#ref-bosnjak}I. Bošnjak, P. Marković, and V. Vučković — computational verification of small cases.

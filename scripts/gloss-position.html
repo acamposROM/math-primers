@@ -1,0 +1,24 @@
+<script>
+/* Keep glossary popovers on-screen. When a term is hovered or focused, measure its
+   popover and nudge it horizontally so it never overflows the viewport edge. The
+   popover is visibility:hidden (not display:none), so it has real dimensions to measure
+   before it becomes visible. Works for mouse hover and tap/keyboard focus. */
+(function () {
+  var MARGIN = 8;
+  function place(g) {
+    var pop = g.querySelector(".gloss-pop");
+    if (!pop) return;
+    pop.style.left = "0px";                 // reset to default, then measure
+    var r = pop.getBoundingClientRect();
+    var vw = document.documentElement.clientWidth;
+    var shift = 0;
+    if (r.right > vw - MARGIN) shift = (vw - MARGIN) - r.right;  // overflowing right → pull left
+    if (r.left + shift < MARGIN) shift = MARGIN - r.left;        // but not past the left edge
+    pop.style.left = shift + "px";
+  }
+  document.querySelectorAll(".gloss").forEach(function (g) {
+    g.addEventListener("mouseenter", function () { place(g); });
+    g.addEventListener("focusin", function () { place(g); });
+  });
+})();
+</script>

@@ -49,13 +49,18 @@ body {
   line-height: 1.65; max-width: 44rem; margin: 3rem auto; padding: 0 1.25rem;
   -webkit-text-size-adjust: 100%;
 }
+/* Phones: tighter margins, slightly smaller base size. */
+@media (max-width: 480px) {
+  html { font-size: 17px; }
+  body { margin: 1.25rem auto; padding: 0 1rem; }
+}
 h1, h2, h3, h4 { font-family: -apple-system, system-ui, sans-serif; line-height: 1.25; }
 h1 { font-size: 1.9rem; margin: 0 0 .5rem; }
 h2 { font-size: 1.4rem; margin: 2.2rem 0 .6rem; padding-bottom: .2rem; border-bottom: 1px solid var(--rule); }
 h3 { font-size: 1.15rem; margin: 1.6rem 0 .4rem; }
 a { color: var(--link); }
 p, li { overflow-wrap: break-word; }
-code { background: var(--code-bg); padding: .1em .35em; border-radius: 4px; font-size: .9em; }
+code { background: var(--code-bg); padding: .1em .35em; border-radius: 4px; font-size: .9em; overflow-wrap: break-word; }
 pre { background: var(--code-bg); padding: 1rem; border-radius: 8px; overflow-x: auto; }
 pre code { background: none; padding: 0; }
 blockquote { margin: 1rem 0; padding: .2rem 1rem; border-left: 3px solid var(--rule); color: var(--muted); }
@@ -215,8 +220,10 @@ pre.mermaid svg { max-width: 100%; height: auto; }
 sup a { text-decoration: none; font-weight: 600; }
 sup a:hover { text-decoration: underline; }
 /* Highlight a reference when jumped to (the anchor is an empty span inside the li).
-   Padding is offset by a negative margin so the item doesn't shift out of alignment. */
+   Uses background + box-shadow only (no padding/margin) so the item never shifts. */
 ol li:has(:target) {
-  background: color-mix(in srgb, var(--link) 12%, var(--bg));
-  border-radius: 4px; padding: 1px 5px; margin: 0 -5px;
+  --ref-hl: color-mix(in srgb, var(--link) 12%, var(--bg));
+  background: var(--ref-hl);
+  border-radius: 4px;
+  box-shadow: 0 0 0 3px var(--ref-hl);
 }
