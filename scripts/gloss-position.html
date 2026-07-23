@@ -1,24 +1,51 @@
 <script>
-/* Keep glossary popovers on-screen. When a term is hovered or focused, measure its
-   popover and nudge it horizontally so it never overflows the viewport edge. The
-   popover is visibility:hidden (not display:none), so it has real dimensions to measure
-   before it becomes visible. Works for mouse hover and tap/keyboard focus. */
+/* Glossary popover interaction + positioning. Only ONE popover is ever open.
+   - Hover a term  -> preview (closes when the mouse leaves).
+   - Click a term  -> toggle it open/closed; clicking another closes the first.
+   - Click outside / Escape -> close.
+   Positioning nudges the popover so it never overflows the viewport edge. The popover
+   is visibility:hidden (not display:none), so it has real dimensions to measure. */
 (function () {
   var MARGIN = 8;
+  var openEl = null;   // the currently shown term (or null)
+  var pinned = false;  // true if it was opened by a click (sticky) vs hover (transient)
+
   function place(g) {
     var pop = g.querySelector(".gloss-pop");
     if (!pop) return;
-    pop.style.left = "0px";                 // reset to default, then measure
+    pop.style.left = "0px";
     var r = pop.getBoundingClientRect();
-    var vw = document.documentElement.clientWidth;
-    var shift = 0;
-    if (r.right > vw - MARGIN) shift = (vw - MARGIN) - r.right;  // overflowing right → pull left
-    if (r.left + shift < MARGIN) shift = MARGIN - r.left;        // but not past the left edge
+    var vw = document.documentElement.clientWidth, shift = 0;
+    if (r.right > vw - MARGIN) shift = (vw - MARGIN) - r.right;   // overflow right -> pull left
+    if (r.left + shift < MARGIN) shift = MARGIN - r.left;         // but not past the left edge
     pop.style.left = shift + "px";
   }
+  function hide() {
+    if (openEl) openEl.classList.remove("gloss-open");
+    openEl = null; pinned = false;
+  }
+  function show(g, pin) {
+    if (openEl && openEl !== g) openEl.classList.remove("gloss-open");
+    g.classList.add("gloss-open");
+    openEl = g; pinned = pin; place(g);
+  }
+  function toggle(g) { if (openEl === g) hide(); else show(g, true); }
+
   document.querySelectorAll(".gloss").forEach(function (g) {
-    g.addEventListener("mouseenter", function () { place(g); });
-    g.addEventListener("focusin", function () { place(g); });
+    g.addEventListener("mouseenter", function () { if (!pinned) show(g, false); });
+    g.addEventListener("mouseleave", function () { if (openEl === g && !pinned) hide(); });
+    g.addEventListener("click", function (e) {
+      if (e.target.closest(".gloss-pop")) { e.stopPropagation(); return; } // inside popover: keep open
+      e.stopPropagation();
+      toggle(g);
+    });
+    g.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(g); }
+      else if (e.key === "Escape") hide();
+    });
   });
+  document.addEventListener("click", hide);  // clicks on terms/popovers stopPropagation, so this is "outside"
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") hide(); });
+  window.addEventListener("resize", function () { if (openEl) place(openEl); });
 })();
 </script>

@@ -134,7 +134,7 @@ pre.sourceCode { background: var(--code-bg); }
 .gloss {
   position: relative;
   border-bottom: 1px dotted var(--link);
-  cursor: help;
+  cursor: pointer;
 }
 .gloss-pop {
   position: absolute;
@@ -157,9 +157,7 @@ pre.sourceCode { background: var(--code-bg); }
   font-style: normal; font-weight: normal;
   line-height: 1.5; text-align: left; white-space: normal;
 }
-.gloss:hover > .gloss-pop,
-.gloss:focus > .gloss-pop,
-.gloss:focus-within > .gloss-pop {
+.gloss.gloss-open > .gloss-pop {
   visibility: visible; opacity: 1; transform: translateY(0);
   pointer-events: auto;
 }
