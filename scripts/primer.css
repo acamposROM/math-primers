@@ -61,8 +61,17 @@ h3 { font-size: 1.15rem; margin: 1.6rem 0 .4rem; }
 a { color: var(--link); }
 p, li { overflow-wrap: break-word; }
 code { background: var(--code-bg); padding: .1em .35em; border-radius: 4px; font-size: .9em; overflow-wrap: break-word; }
-pre { background: var(--code-bg); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+pre { overflow-x: auto; border-radius: 8px; }
 pre code { background: none; padding: 0; }
+/* Highlighted code scrolls at the div.sourceCode level (pandoc). Make the <pre>
+   content-width and put the tint on IT, so the background covers the full width when
+   the block is scrolled horizontally (fixes a gap, notably on mobile). div.sourceCode
+   is the rounded scroll viewport. */
+div.sourceCode { overflow: auto; border-radius: 8px; }
+pre.sourceCode {
+  width: max-content; min-width: 100%; box-sizing: border-box;
+  background: var(--code-bg); padding: 1rem; border-radius: 0;
+}
 blockquote { margin: 1rem 0; padding: .2rem 1rem; border-left: 3px solid var(--rule); color: var(--muted); }
 table { border-collapse: collapse; margin: 1rem 0; display: block; overflow-x: auto; }
 th, td { border: 1px solid var(--rule); padding: .4rem .7rem; text-align: left; }
@@ -106,7 +115,6 @@ pre.sourceCode span.bn,
 pre.sourceCode span.fl { color: var(--tok-dv); }                     /* numbers   */
 pre.sourceCode span.st { color: var(--tok-st); }                     /* strings   */
 pre.sourceCode span.op { color: var(--fg); }                         /* operators */
-pre.sourceCode { background: var(--code-bg); }
 
 /* Top navigation (home link) on primer pages. */
 .topnav {
